@@ -1,0 +1,32 @@
+<h2 id="header_text">Select single element</h2>
+<p>String Id: <input id="string_id" value=""></p>
+<p>On click:  <input id="on_click" value=""></p>
+<p>Get data:  <input id="get_data" value=""></p>
+<button id="set" disabled="true">Set attributes</button>
+<script>
+
+document.getElementById('set').onclick = () => {
+  parent.postMessage({ pluginMessage: 
+    { 
+      type: 'set-props', 
+      string_id: document.getElementById("string_id").value,
+      on_click: document.getElementById("on_click").value,
+      get_data: document.getElementById("get_data").value,
+    } 
+  }, 
+  '*')
+}
+
+onmessage = (e) => {
+var msg = JSON.parse(event.data.pluginMessage);
+  if (msg.type == "show-props") {
+    document.getElementById("header_text").innerHTML = msg.name
+    document.getElementById("string_id").value = msg.string_id
+    document.getElementById("on_click").value = msg.on_click
+    document.getElementById("get_data").value = msg.get_data
+
+    document.getElementById("set").disabled = !msg.set_enabled
+  }
+}
+
+</script>
